@@ -1,0 +1,9 @@
+
+.containerInput {
+  background:lightgrey;
+  padding: 4px;
+  width: 250px;
+  minHeight: 1px;
+  borderRadius: 10px;
+  textAlighn:center;
+}
