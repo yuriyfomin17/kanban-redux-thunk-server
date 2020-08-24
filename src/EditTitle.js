@@ -25,7 +25,7 @@ function EditTitle(props) {
     return (
         <span>
 
-                {editBut ? <span className="dividerTitleBut">{props.el.title}</span> :
+                {editBut ? <span className="dividerTitleBut">{props.el.name}</span> :
                     <input type="text" className="form-control" aria-label="Small"
                            aria-describedby="inputGroup-sizing-sm"
                            value={inputValue} onChange={e => setInput(e.target.value)}/>}

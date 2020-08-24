@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Board from "./Board";
 import {v4 as uuidv4} from 'uuid';
 import {DragDropContext} from "react-beautiful-dnd";
 import ModalWindow from "./ModalWindow";
 import {connect} from 'react-redux';
+import {getList} from "./redux/actionCreator";
 
 
 function App(props) {
@@ -121,9 +122,13 @@ function App(props) {
             //     console.log("Copied Tasks", copiedTasks)
             //     setTasks(copiedTasks)
             // }
-            props.dragDiffColumn(source.droppableId,destination.droppableId,result.destination.index,result.source.index)
+            props.dragDiffColumn(source.droppableId, destination.droppableId, result.destination.index, result.source.index)
         }
     }
+    useEffect(() => {
+        props.getFullList()
+
+    }, []);
     return (
         <div>
             <div style={{display: 'flex', justifyContent: 'center', height: '100%'}}>
@@ -137,8 +142,8 @@ function App(props) {
                         {
                             props.store.statuses.map((el, index) =>
                                 <Board key={uuidv4()}
-                                    columnName={el}
-                                    indexOfColumn={index}
+                                       columnName={el}
+                                       indexOfColumn={index}
                                 />
                             )
                         }
@@ -169,7 +174,8 @@ const mapDispatchToProps = (dispatch) => ({
     dragDiffColumn: (sourceColumn, destColumn, destIndex, sourceIndex) => dispatch({
         type: 'DRAG_END_DIFFERENT_COLUMN',
         payload: {sourceColumn: sourceColumn, destColumn: destColumn, destIndex: destIndex, sourceIndex: sourceIndex}
-    })
+    }),
+    getFullList: () => dispatch(getList())
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);
