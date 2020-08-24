@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 
 function App(props) {
     console.log("My todo store", props.store.statuses)
+    console.log("Hello")
     // const deleteTask = async (column, ID) => {
     //     // const copiedTasks = tasks.slice()
     //     // const arrColumnTasks = copiedTasks[column][column]
