@@ -82,7 +82,7 @@ function Board(props) {
 
 
                 <button type="button" className="btn btn-outline-primary btn-sm"
-                        onClick={() => props.sortAlphabet(props.indexOfColumn)}>Alphabet
+                        onClick={() => props.sortAlphabet(props.indexOfColumn)}>Sort by Alphabet
                 </button>
 
             </div>

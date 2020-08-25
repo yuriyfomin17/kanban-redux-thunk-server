@@ -107,7 +107,7 @@ const todo = (state = initialState, action) => {
                 await axios({
                     url: `http://localhost:5000/todo/${element._id}`,
                     method: 'PATCH',
-                    data: {index: index, column:element.column},
+                    data: {index: index, column: element.column},
                 })
                     .catch(function (error) {
                         console.log(error)
@@ -117,13 +117,43 @@ const todo = (state = initialState, action) => {
                 await axios({
                     url: `http://localhost:5000/todo/${element._id}`,
                     method: 'PATCH',
-                    data: {index: index, column:element.column},
+                    data: {index: index, column: element.column},
                 })
                     .catch(function (error) {
                         console.log(error)
                     })
             })
 
+            return {
+                ...state,
+                0: [...state["0"]],
+                1: [...state["1"]],
+                2: [...state["2"]],
+                3: [...state["3"]],
+                statuses: [...state.statuses]
+            }
+        case 'SORT_ALPHABETICALLY':
+            // eslint-disable-next-line array-callback-return
+            state[action.payload.column].sort(function (a, b) {
+                if (a.name > b.name) {
+                    return 1
+                }
+                if (a.name < b.name) {
+                    return -1
+                }
+
+            })
+            update(state)
+            state[action.payload.column].map(async function (element, index) {
+                await axios({
+                    url: `http://localhost:5000/todo/${element._id}`,
+                    method: 'PATCH',
+                    data: {index: index},
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            })
             return {
                 ...state,
                 0: [...state["0"]],
