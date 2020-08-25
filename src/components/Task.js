@@ -5,7 +5,7 @@ import EditTitle from "./EditTitle";
 import "./App.css"
 import {connect} from "react-redux";
 import axios from "axios";
-import {getList} from "./redux/actionCreator";
+import {getList} from "../redux/actionCreator";
 
 const editBut = (
     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-pen" fill="currentColor"
@@ -45,21 +45,8 @@ function Task(props) {
     }
 
 
-    // props.store[props.indexOfColumn].map(async function (element, index) {
-    //     console.log("ELEMENT ID", element._id)
-    //     await axios({
-    //         url: `http://localhost:5000/todo/${element._id}`,
-    //         method: 'PATCH',
-    //         data: {index: index},
-    //     })
-    //         .catch(function (error) {
-    //             console.log(error)
-    //         })
-    // })
-
-
     return (
-        <div>
+        <div className="">
 
             <Draggable key={uuidv4()} draggableId={props.el._id} index={props.index}>
                 {(provided, snapshot) => (

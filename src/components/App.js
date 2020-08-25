@@ -4,7 +4,8 @@ import {v4 as uuidv4} from 'uuid';
 import {DragDropContext} from "react-beautiful-dnd";
 import ModalWindow from "./ModalWindow";
 import {connect} from 'react-redux';
-import {getList} from "./redux/actionCreator";
+import {getList} from "../redux/actionCreator";
+
 
 
 function App(props) {
@@ -38,8 +39,8 @@ function App(props) {
 
     }, []);
     return (
-        <div>
-            <div style={{display: 'flex', justifyContent: 'center', height: '100%'}}>
+        <div className="text-center mt-5">
+            <div  style={{display: 'flex', justifyContent: 'center', height: '100%'}}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <div
                         style={{
@@ -49,10 +50,12 @@ function App(props) {
                     >
                         {
                             props.store.statuses.map((el, index) =>
-                                <Board key={uuidv4()}
-                                       columnName={el}
-                                       indexOfColumn={index}
-                                />
+                                <div  key={uuidv4()}>
+                                    <Board key={uuidv4()}
+                                           columnName={el}
+                                           indexOfColumn={index}
+                                    />
+                                </div>
                             )
                         }
                     </div>
@@ -64,6 +67,7 @@ function App(props) {
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <ModalWindow statuses={props.store.statuses} store={props.store}/>
             </div>
+
         </div>
 
     )

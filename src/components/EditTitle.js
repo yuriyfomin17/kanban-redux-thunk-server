@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "./App.css"
 import {connect} from "react-redux";
 import axios from 'axios';
-import {getList} from "./redux/actionCreator";
+import {getList} from "../redux/actionCreator";
 
 const saveBut = (<svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-file-check" fill="currentColor"
                       xmlns="http://www.w3.org/2000/svg" textalign="right">

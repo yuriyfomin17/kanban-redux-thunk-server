@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, ModalHeader, Input, Label, ModalBody, ModalFooter, Button} from "reactstrap"
 import {connect} from "react-redux";
 import axios from 'axios';
-import {getList} from "./redux/actionCreator";
+import {getList} from "../redux/actionCreator";
 
 
 function ModalWindow(props) {
@@ -46,7 +46,7 @@ function ModalWindow(props) {
                     }
                 </select>
                 <ModalFooter>
-                    <Button onClick={addNewTask}>Add new Task</Button>{' '}
+                    <Button className="btn btn-light m-3" onClick={addNewTask}>Add new Task</Button>{' '}
                     <Button onClick={() => setModalOpen(!isModalOpen)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
