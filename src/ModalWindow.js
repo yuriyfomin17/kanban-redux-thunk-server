@@ -11,11 +11,6 @@ function ModalWindow(props) {
     const [boardOption, setBoard] = useState(0)
     console.log(boardOption)
     const addNewTask = () => {
-        // props.addTodo(boardOption, newTitle)
-        // setModalOpen(!isModalOpen)
-        // setNewTitle("")
-        console.log("index",props.store[boardOption].length)
-        console.log("column",boardOption)
         axios({
             url: 'http://localhost:5000/todo',
             method: 'POST',

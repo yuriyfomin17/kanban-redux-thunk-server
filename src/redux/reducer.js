@@ -1,3 +1,4 @@
+import axios from "axios";
 
 const initialState = {
     0: [],
@@ -33,9 +34,96 @@ const todo = (state = initialState, action) => {
                 state[column] = columnArr
 
             }
+            update(state)
 
+            console.log("LIST FORM SERVER", state)
+
+            return {
+                ...state,
+                0: [...state["0"]],
+                1: [...state["1"]],
+                2: [...state["2"]],
+                3: [...state["3"]],
+                statuses: [...state.statuses]
+            }
+        case "UPDATE_INDICES_DELETE_ITEM":
+            console.log("BEFORE DELETE", state[action.payload.column])
+            const indexToDelete = state[action.payload.column].findIndex(el => el._id === action.payload._id)
+            state[action.payload.column].splice(indexToDelete, 1)
             update(state)
             console.log("Final State", state)
+            console.log("AFTER DELETE", state[action.payload.column])
+            state[action.payload.column].map(async function (element, index) {
+                await axios({
+                    url: `http://localhost:5000/todo/${element._id}`,
+                    method: 'PATCH',
+                    data: {index: index},
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            })
+            return {
+                ...state,
+                0: [...state["0"]],
+                1: [...state["1"]],
+                2: [...state["2"]],
+                3: [...state["3"]],
+                statuses: [...state.statuses]
+            }
+        case 'DRAG_END_SAME_COLUMN':
+            console.log("Before Change", state[action.payload.column])
+            console.log("Index to remove", action.payload.indexToRemove)
+            console.log("Index to insert", action.payload.indexToInsert)
+            const [removed] = state[action.payload.column].splice(action.payload.indexToRemove, 1)
+            state[action.payload.column].splice(action.payload.indexToInsert, 0, removed)
+            console.log("After change", state[action.payload.column])
+            update(state)
+            state[action.payload.column].map(async function (element, index) {
+                await axios({
+                    url: `http://localhost:5000/todo/${element._id}`,
+                    method: 'PATCH',
+                    data: {index: index},
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            })
+            return {
+                ...state,
+                0: [...state["0"]],
+                1: [...state["1"]],
+                2: [...state["2"]],
+                3: [...state["3"]],
+                statuses: [...state.statuses]
+            }
+        case 'DRAG_END_DIFFERENT_COLUMN':
+
+            const [removedSource] = state[action.payload.sourceColumn].splice(action.payload.sourceIndex, 1)
+            state[action.payload.destColumn].splice(action.payload.destIndex, 0, removedSource)
+            console.log("After change", state[action.payload.column])
+            update(state)
+            state[action.payload.sourceColumn].map(async function (element, index) {
+                await axios({
+                    url: `http://localhost:5000/todo/${element._id}`,
+                    method: 'PATCH',
+                    data: {index: index, column:element.column},
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            })
+            state[action.payload.destColumn].map(async function (element, index) {
+                await axios({
+                    url: `http://localhost:5000/todo/${element._id}`,
+                    method: 'PATCH',
+                    data: {index: index, column:element.column},
+                })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            })
+
             return {
                 ...state,
                 0: [...state["0"]],
@@ -45,11 +133,12 @@ const todo = (state = initialState, action) => {
                 statuses: [...state.statuses]
             }
 
-
         default:
             return state
+
 
     }
 
 }
+
 export default todo

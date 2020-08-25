@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Board from "./Board";
 import {v4 as uuidv4} from 'uuid';
 import {DragDropContext} from "react-beautiful-dnd";
@@ -23,9 +23,13 @@ function App(props) {
             return;
         }
         if (destination.droppableId === source.droppableId) {
+            console.log("Index to remove", result.source.index)
+            console.log("Index to insert", result.destination.index)
 
+            props.dragSameColumn(destination.droppableId, result.source.index, result.destination.index)
 
         } else {
+            props.dragDiffColumn(source.droppableId, destination.droppableId, result.destination.index, result.source.index)
 
         }
     }
@@ -71,8 +75,15 @@ const mapStateToProps = (state) => ({
     store: state
 });
 const mapDispatchToProps = (dispatch) => ({
-
-    getFullList: () => dispatch(getList())
+    getFullList: () => dispatch(getList()),
+    dragSameColumn: (column, indexToRemove, indexToInsert) => dispatch({
+        type: 'DRAG_END_SAME_COLUMN',
+        payload: {column: column, indexToRemove: indexToRemove, indexToInsert: indexToInsert}
+    }),
+    dragDiffColumn: (sourceColumn, destColumn, destIndex, sourceIndex) => dispatch({
+        type: 'DRAG_END_DIFFERENT_COLUMN',
+        payload: {sourceColumn: sourceColumn, destColumn: destColumn, destIndex: destIndex, sourceIndex: sourceIndex}
+    })
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -29,19 +29,34 @@ const deleteBut = (
 
 function Task(props) {
 
-    const deleteItem = () => {
-        axios({
+    const deleteItem = async () => {
+        await axios({
             url: `http://localhost:5000/todo/${props.el._id}`,
             method: 'DELETE',
 
         })
             .then(res => {
                 props.getFullList()
+                props.updateIndices(props.el._id, props.indexOfColumn)
             })
             .catch(function (error) {
                 console.log(error)
             })
     }
+
+
+    // props.store[props.indexOfColumn].map(async function (element, index) {
+    //     console.log("ELEMENT ID", element._id)
+    //     await axios({
+    //         url: `http://localhost:5000/todo/${element._id}`,
+    //         method: 'PATCH',
+    //         data: {index: index},
+    //     })
+    //         .catch(function (error) {
+    //             console.log(error)
+    //         })
+    // })
+
 
     return (
         <div>
@@ -86,10 +101,11 @@ function Task(props) {
 }
 
 const mapStateToProps = (state) => ({
-    columns: state
+    store: state
 });
 const mapDispatchToProps = (dispatch) => ({
-    getFullList: () => dispatch(getList())
+    getFullList: () => dispatch(getList()),
+    updateIndices: (_id, column) => dispatch({type: 'UPDATE_INDICES_DELETE_ITEM', payload: {_id: _id, column: column}})
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Task);

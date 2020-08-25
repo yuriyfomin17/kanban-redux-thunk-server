@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function getList() {
+export function getList  () {
     return (dispatch) => {
         axios({
             url: 'http://localhost:5000/todo',
