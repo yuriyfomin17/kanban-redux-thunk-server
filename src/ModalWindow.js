@@ -34,6 +34,8 @@ function ModalWindow(props) {
                     <Label>New Title</Label>
                     <Input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
                            placeholder="Enter Task Title..."/>
+                    <Input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
+                           placeholder="Enter Task Description..."/>
                 </ModalBody>
                 <select id="priority" className="form-control" value={boardOption}
                         onChange={(e) => setBoard(e.target.value)} placeholder="">
