@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import "./App.css"
 import {connect} from "react-redux";
+import axios from 'axios';
+import {getList} from "./redux/actionCreator";
 
 const saveBut = (<svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-file-check" fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg" textAlign="right">
+                      xmlns="http://www.w3.org/2000/svg" textalign="right">
     <path fillRule="evenodd"
           d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
     <path fillRule="evenodd"
@@ -18,9 +20,20 @@ function EditTitle(props) {
         setEditBut(!editBut)
     }
     const changeSave = () => {
-        props.editTodo( props.el.id, props.indexOfColumn, inputValue)
+        axios({
+            url: `http://localhost:5000/todo/${props.el._id}`,
+            method: 'PATCH',
+            data: {name: inputValue}
+        })
+            .then(res => {
+                props.getFullList()
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
         setEditBut(!editBut)
     }
+
 
     return (
         <span>
@@ -43,10 +56,7 @@ const mapStateToProps = (state) => ({
     columns: state
 });
 const mapDispatchToProps = (dispatch) => ({
-    editTodo: (id, column, newTitle) => dispatch({
-        type: 'EDIT_TODO',
-        payload: {id: id, column: column, newTitle: newTitle}
-    })
+    getFullList: () => dispatch(getList())
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditTitle);

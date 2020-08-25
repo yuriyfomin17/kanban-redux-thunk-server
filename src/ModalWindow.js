@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Modal, ModalHeader, Input, Label, ModalBody, ModalFooter, Button} from "reactstrap"
 import {connect} from "react-redux";
+import axios from 'axios';
+import {getList} from "./redux/actionCreator";
 
 
 function ModalWindow(props) {
@@ -9,7 +11,22 @@ function ModalWindow(props) {
     const [boardOption, setBoard] = useState(0)
     console.log(boardOption)
     const addNewTask = () => {
-        props.addTodo(boardOption, newTitle)
+        // props.addTodo(boardOption, newTitle)
+        // setModalOpen(!isModalOpen)
+        // setNewTitle("")
+        console.log("index",props.store[boardOption].length)
+        console.log("column",boardOption)
+        axios({
+            url: 'http://localhost:5000/todo',
+            method: 'POST',
+            data: {name: newTitle, column: boardOption, index:props.store[boardOption].length, done:false},
+        })
+            .then(res => {
+                props.getFullList()
+            })
+            .catch(error => {
+                console.log(error)
+            })
         setModalOpen(!isModalOpen)
         setNewTitle("")
     }
@@ -44,7 +61,7 @@ const mapStateToProps = (state) => ({
     store: state
 });
 const mapDispatchToProps = (dispatch) => ({
-    addTodo: (column, title) => dispatch({type: 'TODO_ADD', payload: {column:column, title:title}}),
+    getFullList: () => dispatch(getList())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ModalWindow);
 

@@ -4,6 +4,8 @@ import {v4 as uuidv4} from 'uuid';
 import EditTitle from "./EditTitle";
 import "./App.css"
 import {connect} from "react-redux";
+import axios from "axios";
+import {getList} from "./redux/actionCreator";
 
 const editBut = (
     <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-pen" fill="currentColor"
@@ -28,14 +30,23 @@ const deleteBut = (
 function Task(props) {
 
     const deleteItem = () => {
-        console.log("Index of column", props.indexOfColumn)
-        props.deleteTodo(props.el.id, props.indexOfColumn)
+        axios({
+            url: `http://localhost:5000/todo/${props.el._id}`,
+            method: 'DELETE',
+
+        })
+            .then(res => {
+                props.getFullList()
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     return (
         <div>
 
-            <Draggable key={uuidv4()} draggableId={props.el.id} index={props.index}>
+            <Draggable key={uuidv4()} draggableId={props.el._id} index={props.index}>
                 {(provided, snapshot) => (
                     <div key={props.el.id}
                          ref={provided.innerRef}
@@ -78,7 +89,7 @@ const mapStateToProps = (state) => ({
     columns: state
 });
 const mapDispatchToProps = (dispatch) => ({
-    deleteTodo: (id, column) => dispatch({type: 'DELETE_TODO', payload: {id: id, column: column}})
+    getFullList: () => dispatch(getList())
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Task);
